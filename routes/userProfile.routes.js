@@ -1,9 +1,15 @@
 const express = require('express');
-const passport = require('passport');
 const router = express.Router();
 
-router.get('/google',
-  passport.authenticate('google', { scope: ['email', 'profile'] }));
+router.get('/profile', (req, res) => {
+  logged = req.user;
+  res.render('userProfile');
+});
+
+router.get('/profile/settings', (req, res) => {
+  res.render('userProfileSettings');
+});
+
 
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/user/no-permission' }),
   (req, res) => {
@@ -11,8 +17,4 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
   }
 );
 
-router.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/user/logout');
-});
 module.exports = router;
